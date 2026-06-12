@@ -18,8 +18,13 @@ export default function LeadForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email) {
-      toast.error("Por favor completa tu nombre y email.");
+    if (!form.name) {
+      toast.error("Por favor completa tu nombre.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      toast.error("Email inválido. Verifica el formato.");
       return;
     }
     try {
@@ -71,6 +76,7 @@ export default function LeadForm() {
 
           <form
             onSubmit={handleSubmit}
+            noValidate
             className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-emerald-200/30 border border-emerald-100"
           >
             <div className="space-y-4">

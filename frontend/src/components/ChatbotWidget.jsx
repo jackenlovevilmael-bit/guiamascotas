@@ -10,14 +10,16 @@ const INITIAL_MESSAGES = [
   {
     role: "assistant",
     content:
-      "¡Hola! Soy VetBot 🐾, el asistente de GuiaMascotas. Cuéntame qué le pasa a tu mascota o pregúntame sobre cuidados. Recuerda: no sustituyo a un veterinario.",
+      "¡Hola! Soy VetBot 🐾, el asistente experto de GuiaMascotas. Cuéntame qué le pasa a tu mascota (perro, gato, pájaro, roedor, pez, reptil...) o pregúntame sobre cuidados de cualquier especie. Recuerda: no sustituyo a un veterinario.",
   },
 ];
 
 const SUGGESTIONS = [
   "Mi perro vomitó dos veces hoy",
   "Mi gato no quiere comer",
-  "Cómo desparasitar un cachorro",
+  "Cómo cuidar un periquito",
+  "Mi hámster está apático",
+  "¿Qué come una tortuga?",
   "Alimentos prohibidos para perros",
 ];
 
@@ -36,6 +38,20 @@ export default function ChatbotWidget() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, open]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      setOpen(true);
+      const prompt = e?.detail?.prompt;
+      if (prompt) {
+        // Auto-send the prompt after a short delay
+        setTimeout(() => send(prompt), 250);
+      }
+    };
+    window.addEventListener("open-vetbot", handler);
+    return () => window.removeEventListener("open-vetbot", handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId]);
 
   const send = async (text) => {
     const msg = (text ?? input).trim();
@@ -71,7 +87,7 @@ export default function ChatbotWidget() {
   return (
     <>
       {/* Floating launcher */}
-      <div id="chat" className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+      <div id="chat" className="fixed bottom-24 right-5 z-[60] flex flex-col items-end gap-3">
         {!open && (
           <button
             data-testid="chatbot-launcher"

@@ -5,6 +5,7 @@ import SymptomsSection from "@/components/SymptomsSection";
 import EmergencySection from "@/components/EmergencySection";
 import FirstAidKit from "@/components/FirstAidKit";
 import LeadForm from "@/components/LeadForm";
+import PetsCatalog from "@/components/PetsCatalog";
 
 export default function Home() {
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function Home() {
       <Hero />
       <Disclaimer />
       <SymptomsSection />
+      <PetsCatalog />
       <EmergencySection />
       <FirstAidKit />
       <LeadForm />

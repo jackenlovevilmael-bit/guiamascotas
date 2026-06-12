@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const links = [
   { to: "/#sintomas", label: "Síntomas" },
+  { to: "/#mascotas", label: "Mascotas" },
   { to: "/#emergencia", label: "Emergencias" },
   { to: "/#kit", label: "Kit" },
   { to: "/#chat", label: "Asistente IA" },

@@ -20,9 +20,8 @@ export default function Hero() {
             </h1>
 
             <p className="mt-5 max-w-xl text-lg sm:text-xl text-zinc-600 leading-relaxed">
-              Guía rápida y práctica de primeros auxilios para perros y gatos.
-              Encuentra qué hacer en emergencias comunes y consulta a nuestro
-              asistente con IA gratis.
+              Guía rápida y práctica de primeros auxilios para perros, gatos, aves,
+              roedores, peces y más. Más de 100 mascotas y un asistente con IA gratis.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
