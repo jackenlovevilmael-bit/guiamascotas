@@ -1,14 +1,17 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
+from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
+
+from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
 
 
 ROOT_DIR = Path(__file__).parent
@@ -19,52 +22,137 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
+
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(title="GuiaMascotas API")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
 
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
+# ---------- Models ----------
+class LeadCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=100)
+    email: EmailStr
+    pet_type: Optional[str] = None
+    message: Optional[str] = None
+
+
+class Lead(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    name: str
+    email: str
+    pet_type: Optional[str] = None
+    message: Optional[str] = None
+    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
-class StatusCheckCreate(BaseModel):
-    client_name: str
 
-# Add your routes to the router instead of directly to app
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=2000)
+    session_id: Optional[str] = None
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    session_id: str
+
+
+SYSTEM_PROMPT = (
+    "Eres VetBot, el asistente virtual de GuiaMascotas.com. "
+    "Tu misión es orientar a dueños de perros y gatos sobre primeros auxilios y cuidados generales en español, "
+    "de manera clara, empática y breve. "
+    "Reglas estrictas:\n"
+    "1) Siempre recuerda que NO sustituyes la atención veterinaria profesional.\n"
+    "2) Ante signos graves (dificultad respiratoria, convulsiones, envenenamiento, golpe de calor, sangrado abundante), "
+    "pide al usuario contactar de INMEDIATO a un veterinario de urgencias.\n"
+    "3) Da pasos prácticos numerados cuando aplique.\n"
+    "4) Nunca recomiendes medicamentos humanos sin supervisión veterinaria.\n"
+    "5) Usa un tono amable, profesional y tranquilizador.\n"
+    "6) Mantén las respuestas concisas: máximo 6-8 líneas, salvo que el usuario pida más detalle."
+)
+
+
+# ---------- Routes ----------
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "GuiaMascotas API en línea"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
 
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
+@api_router.get("/health")
+async def health():
+    return {"status": "ok", "service": "guiamascotas"}
+
+
+# Leads
+@api_router.post("/leads", response_model=Lead)
+async def create_lead(payload: LeadCreate):
+    lead = Lead(
+        name=payload.name.strip(),
+        email=payload.email,
+        pet_type=payload.pet_type,
+        message=payload.message,
+    )
+    await db.leads.insert_one(lead.model_dump())
+    return lead
+
+
+@api_router.get("/leads", response_model=List[Lead])
+async def list_leads():
+    docs = await db.leads.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return docs
+
+
+# Chat (non-streaming for simplicity in JSON UI)
+@api_router.post("/chat", response_model=ChatResponse)
+async def chat(req: ChatRequest):
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY no configurado")
+
+    session_id = req.session_id or str(uuid.uuid4())
+
+    chat_client = LlmChat(
+        api_key=EMERGENT_LLM_KEY,
+        session_id=session_id,
+        system_message=SYSTEM_PROMPT,
+    ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+
+    # Persist user message
+    await db.chat_messages.insert_one({
+        "id": str(uuid.uuid4()),
+        "session_id": session_id,
+        "role": "user",
+        "content": req.message,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    # Stream and accumulate
+    reply_text = ""
+    try:
+        async for event in chat_client.stream_message(UserMessage(text=req.message)):
+            if isinstance(event, TextDelta):
+                reply_text += event.content
+            elif isinstance(event, StreamDone):
+                break
+    except Exception as e:
+        logger.exception("Chat error")
+        raise HTTPException(status_code=500, detail=f"Error del asistente: {str(e)}")
+
+    if not reply_text:
+        reply_text = "Lo siento, no pude generar una respuesta. Por favor intenta de nuevo."
+
+    # Persist assistant message
+    await db.chat_messages.insert_one({
+        "id": str(uuid.uuid4()),
+        "session_id": session_id,
+        "role": "assistant",
+        "content": reply_text,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    return ChatResponse(reply=reply_text, session_id=session_id)
+
 
 # Include the router in the main app
 app.include_router(api_router)
@@ -83,6 +171,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
