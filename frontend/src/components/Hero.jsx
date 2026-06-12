@@ -36,8 +36,8 @@ export default function Hero() {
 
             <p className="mt-5 max-w-xl text-lg sm:text-xl text-zinc-600 leading-relaxed">
               Guía rápida y práctica de primeros auxilios para perros, gatos, aves,
-              conejos, roedores, peces, reptiles y más. Diagnóstico inteligente con
-              IA y un asistente experto, todo gratis.
+              conejos, roedores, peces, reptiles y más. Consulta veterinaria
+              orientativa al instante, totalmente gratis.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -47,7 +47,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2.5 px-7 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full shadow-lg shadow-emerald-600/25 transition-all hover:-translate-y-0.5"
               >
                 <Search className="w-4 h-4" />
-                Diagnóstico con IA
+                Consulta rápida
               </a>
               <a
                 href="#emergencia"

@@ -94,7 +94,7 @@ export default function PetDialog({ pet, onClose, onAskBot }) {
           className="mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full shadow-lg shadow-emerald-600/25 transition-all"
         >
           <MessageCircle className="w-4 h-4" />
-          Pregúntale a VetBot sobre el {pet.name}
+          Consulta sobre el {pet.name}
         </button>
 
         <p className="mt-3 text-xs text-zinc-500 text-center">

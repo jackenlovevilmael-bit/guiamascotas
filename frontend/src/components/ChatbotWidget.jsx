@@ -10,7 +10,7 @@ const INITIAL_MESSAGES = [
   {
     role: "assistant",
     content:
-      "¡Hola! Soy VetBot 🐾, el asistente experto de GuiaMascotas. Cuéntame qué le pasa a tu mascota (perro, gato, pájaro, roedor, pez, reptil...) o pregúntame sobre cuidados de cualquier especie. Recuerda: no sustituyo a un veterinario.",
+      "¡Hola! Soy GuiaVet 🐾, tu asesor veterinario en línea. Cuéntame qué le pasa a tu mascota (perro, gato, pájaro, roedor, pez, reptil...) o pregúntame sobre cuidados de cualquier especie. Recuerda: la orientación que recibas no sustituye una visita al veterinario.",
   },
 ];
 
@@ -95,7 +95,7 @@ export default function ChatbotWidget() {
             className="relative inline-flex items-center gap-2.5 px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full shadow-xl shadow-emerald-600/30 transition-all hover:-translate-y-0.5 animate-pulse-soft"
           >
             <MessageCircle className="w-5 h-5" />
-            <span className="hidden sm:inline">Pregunta a VetBot</span>
+            <span className="hidden sm:inline">Consulta con GuiaVet</span>
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-rose-500 rounded-full border-2 border-white" />
           </button>
         )}
@@ -113,11 +113,11 @@ export default function ChatbotWidget() {
                 </div>
                 <div>
                   <div className="font-semibold text-sm flex items-center gap-1.5">
-                    VetBot
+                    GuiaVet
                     <Sparkles className="w-3 h-3 text-emerald-400" />
                   </div>
                   <div className="text-[11px] text-zinc-400">
-                    Powered by Claude · GuiaMascotas
+                    Asesor veterinario · GuiaMascotas
                   </div>
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function ChatbotWidget() {
               {loading && (
                 <div className="flex items-center gap-2 text-xs text-zinc-500">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  VetBot está pensando...
+                  GuiaVet está revisando...
                 </div>
               )}
               {messages.length === 1 && !loading && (

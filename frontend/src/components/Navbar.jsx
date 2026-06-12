@@ -3,7 +3,7 @@ import { PawPrint, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const links = [
-  { to: "/#diagnostico", label: "Diagnóstico IA" },
+  { to: "/#diagnostico", label: "Consulta rápida" },
   { to: "/#sintomas", label: "Síntomas" },
   { to: "/#mascotas", label: "Mascotas" },
   { to: "/#emergencia", label: "Emergencias" },

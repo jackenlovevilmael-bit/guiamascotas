@@ -28,17 +28,18 @@ export default function Terms() {
           <h2 className="heading-font text-2xl font-semibold text-zinc-900">2. Naturaleza del contenido</h2>
           <p>
             Todo el contenido publicado en este sitio (artículos, guías,
-            respuestas del asistente IA, listas) es{" "}
+            respuestas del asesor virtual, listas) es{" "}
             <strong>únicamente informativo y educativo</strong>. No constituye
             asesoría veterinaria profesional ni diagnóstico médico.
           </p>
         </section>
 
         <section>
-          <h2 className="heading-font text-2xl font-semibold text-zinc-900">3. Asistente con inteligencia artificial</h2>
+          <h2 className="heading-font text-2xl font-semibold text-zinc-900">3. Asistente automatizado</h2>
           <p>
-            El asistente &quot;VetBot&quot; es una herramienta automatizada basada en
-            modelos de lenguaje. Sus respuestas pueden contener errores. No la
+            El asesor virtual &quot;GuiaVet&quot; es una herramienta automatizada
+            que ofrece orientación general basada en información veterinaria.
+            Sus respuestas pueden contener errores o ser incompletas. No la
             uses como única referencia en situaciones de emergencia. Siempre
             consulta con un veterinario titulado.
           </p>

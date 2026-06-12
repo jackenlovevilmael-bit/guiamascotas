@@ -123,15 +123,15 @@ export default function DiagnosticForm() {
           <div className="lg:col-span-5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold tracking-wider uppercase">
               <Sparkles className="w-3.5 h-3.5" />
-              Diagnóstico con IA
+              Consulta orientativa
             </div>
             <h2 className="heading-font mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter">
               Dinos qué le pasa <br className="hidden sm:block" />
-              <span className="text-emerald-400">y la IA te orienta</span>
+              <span className="text-emerald-400">y te orientamos</span>
             </h2>
             <p className="mt-4 text-zinc-300 text-base sm:text-lg max-w-md leading-relaxed">
-              Completa los datos de tu mascota y sus síntomas. VetBot analizará la
-              información y te dará posibles causas, señales de alarma y qué hacer.
+              Completa los datos de tu mascota y sus síntomas. Recibirás
+              posibles causas, señales de alarma y los pasos a seguir.
             </p>
             <ul className="mt-5 space-y-2 text-sm text-zinc-400">
               <li className="flex items-center gap-2">
@@ -294,7 +294,7 @@ export default function DiagnosticForm() {
 
             <p className="mt-3 text-xs text-zinc-500 leading-relaxed">
               <AlertTriangle className="inline w-3 h-3 text-rose-500 mr-1" />
-              La IA da orientación educativa. Para urgencias o casos graves,
+              Esta orientación es educativa. Para urgencias o casos graves,
               acude SIEMPRE a un veterinario.
             </p>
           </form>
@@ -312,10 +312,10 @@ export default function DiagnosticForm() {
               </div>
               <div>
                 <div className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">
-                  Diagnóstico orientativo de VetBot
+                  Orientación veterinaria
                 </div>
                 <div className="text-sm text-zinc-500">
-                  Generado por IA · No sustituye al veterinario
+                  Información de referencia · No sustituye al veterinario
                 </div>
               </div>
             </div>
@@ -347,7 +347,7 @@ export default function DiagnosticForm() {
               className="mt-5 inline-flex items-center gap-2 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-full text-sm transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
-              Continuar la conversación con VetBot
+              Continuar la consulta
             </button>
           </div>
         )}

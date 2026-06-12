@@ -15,9 +15,10 @@ export default function Footer() {
             </span>
           </div>
           <p className="mt-4 text-sm text-zinc-600 max-w-md leading-relaxed">
-            Tu recurso confiable para el cuidado de perros y gatos.
-            Información educativa, guías de primeros auxilios y un asistente
-            con IA. Siempre consulta a un veterinario ante una emergencia real.
+            Tu recurso confiable para el cuidado de perros, gatos, aves,
+            roedores, peces y más. Información educativa, guías de primeros
+            auxilios y un asesor virtual. Siempre consulta a un veterinario
+            ante una emergencia real.
           </p>
         </div>
 
@@ -43,7 +44,7 @@ export default function Footer() {
             </li>
             <li>
               <a href="/#chat" data-testid="footer-link-chat" className="text-zinc-700 hover:text-emerald-700">
-                Asistente IA
+                Asesor virtual
               </a>
             </li>
           </ul>

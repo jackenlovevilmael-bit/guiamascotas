@@ -50,7 +50,7 @@ export default function ThankYou() {
             className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full shadow-lg shadow-emerald-600/25 transition-all"
           >
             <MessageCircle className="w-4 h-4" />
-            Hablar con VetBot
+            Consulta con GuiaVet
           </a>
         </div>
 
