@@ -1,0 +1,97 @@
+{
+  "theme": "light",
+  "archetype": "1_organic_earthy",
+  "design_philosophy": "A trustworthy, calming, and highly actionable UI for pet owners during emergencies. Generous spacing, soft organic shapes (rounded-3xl), and clinical-yet-friendly typography. Emerald green acts as the primary accent, contrasting with high-alert reds for genuine emergencies.",
+  "colors": {
+    "primary": "#10b981",
+    "primary_hover": "#059669",
+    "background": "#fafafa",
+    "surface": "#ffffff",
+    "surface_glass": "rgba(255, 255, 255, 0.7)",
+    "text_main": "#18181b",
+    "text_muted": "#52525b",
+    "border": "#e4e4e7",
+    "emergency_bg": "#09090b",
+    "emergency_text": "#fafafa",
+    "urgent_badge_bg": "#fee2e2",
+    "urgent_badge_text": "#991b1b"
+  },
+  "typography": {
+    "headings": {
+      "family": "Outfit, sans-serif",
+      "weight": "700",
+      "tracking": "tracking-tight"
+    },
+    "body": {
+      "family": "Work Sans, sans-serif",
+      "weight": "400",
+      "tracking": "tracking-normal"
+    },
+    "rules": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tighter text-zinc-900",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-zinc-900",
+      "h3": "text-xl sm:text-2xl font-semibold text-zinc-900",
+      "labels": "text-xs font-bold uppercase tracking-[0.2em] text-zinc-500",
+      "body": "text-base text-zinc-600 leading-relaxed"
+    }
+  },
+  "spacing_and_layout": {
+    "padding": "Generous spacing. Use p-8 to p-12 for container inners.",
+    "border_radius": "Heavily rely on rounded-3xl (24px) for cards, hero images, and primary buttons.",
+    "symptom_grid": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+    "first_aid_kit_layout": "Bento grid structure. Mix tall and wide blocks for visual interest.",
+    "max_width": "max-w-7xl mx-auto"
+  },
+  "surfaces_and_shadows": {
+    "header": "Crystal Glassmorphism: backdrop-blur-xl bg-white/70 border-b border-zinc-200/50 sticky top-0 z-50",
+    "cards": "Flat background (bg-white), 1px solid border (border-zinc-200), NO shadow by default. On hover: shadow-lg, -translate-y-1, border-emerald-200.",
+    "emergency_block": "Solid background (bg-zinc-950), text-white. Use subtle noise/texture overlay if possible. Use text-shadow for emphasis.",
+    "buttons": "Primary: bg-emerald-500 text-white hover:bg-emerald-600 rounded-full font-medium. Urgent CTA: bg-rose-500 text-white hover:bg-rose-600 rounded-full."
+  },
+  "animations": {
+    "hover": "transition-all duration-300 ease-out",
+    "entrance": "Staggered fade-up for symptom cards.",
+    "chatbot_widget": "Floating animation, bounce or gentle pulse effect to draw attention."
+  },
+  "components": {
+    "navigation": "Clear logo, top links (Síntomas, Emergencias, Kit, Chat), prominent CTA. Sticky with glassmorphism.",
+    "hero": "Two-column or asymmetrical overlay. Left: Strong H1, subtext, dual CTAs (Buscar Síntoma, Urgencia). Right: Rounded-3xl image of cute dog & cat.",
+    "search_filter": "Large centered search bar with pill-shaped filter toggles (Todos, Perros, Gatos) below it. Use Shadcn Tabs or custom pill radio buttons.",
+    "symptom_card": "Vertical layout. Icon top left. Title. Severity badge (URGENTE in red if applicable). Clickable area opening a Shadcn Dialog or navigating to details.",
+    "ai_chatbot": "Floating widget bottom right or dedicated section. Uses Shadcn Card + ScrollArea for chat history. Accent color emerald.",
+    "lead_form": "Newsletter/Download PDF kit capture in a soft emerald-50 container.",
+    "footer": "Dark or zinc-100 background. Links to Privacy Policy, Terms & Conditions."
+  },
+  "images": [
+    {
+      "category": "hero",
+      "url": "https://images.pexels.com/photos/16395150/pexels-photo-16395150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "alt": "A Bengal cat and Yorkshire Terrier sit together",
+      "instructions": "Place in the hero section, constrained by rounded-3xl. Make sure not to exceed 80vh on mobile."
+    },
+    {
+      "category": "medical_context",
+      "url": "https://images.unsplash.com/photo-1654895716780-b4664497420d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODl8MHwxfHNlYXJjaHwxfHx2ZXRlcmluYXJpYW4lMjBjaGVja2luZyUyMGRvZ3xlbnwwfHx8fDE3ODEyMzU5NTl8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Veterinarian holding a small dog",
+      "instructions": "Use for the First Aid kit section or Lead capture background."
+    },
+    {
+      "category": "lifestyle",
+      "url": "https://images.unsplash.com/photo-1633587376982-a9c3d1f4ce65?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwyfHxkb2clMjBydW5uaW5nJTIwcGFya3xlbnwwfHx8fDE3ODEyMzU5NTl8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Brown dog running across green field",
+      "instructions": "Use as a full-width banner image for the 'Thank You' page or conversion success page."
+    }
+  ],
+  "testing": {
+    "rules": "All interactive elements (buttons, links, search bars, filter pills, chatbot inputs, cards) MUST include a 'data-testid' attribute in kebab-case."
+  },
+  "instructions_to_main_agent": [
+    "Install 'lucide-react' for all iconography to replace FontAwesome from the reference.",
+    "Use standard Tailwind classes. For fonts, ensure you load 'Outfit' and 'Work Sans' from Google Fonts in index.html.",
+    "Construct the site using React and React Router for the main page, /gracias, /privacidad, and /terminos.",
+    "Implement Shadcn UI for standard components like Input, Button, Dialog (for symptom details), and Tabs.",
+    "Do NOT use pure #000000 for the emergency section; use bg-zinc-950.",
+    "Ensure the hero section overlay does not blanket the whole image if you use absolute positioning—let the images breathe.",
+    "Build the floating AI chatbot using Shadcn popover or custom fixed div with state, integrated seamlessly in the bottom right."
+  ]
+}
