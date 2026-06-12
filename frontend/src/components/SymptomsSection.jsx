@@ -1,29 +1,21 @@
 import { useMemo, useState } from "react";
-import { Search, ArrowRight, Dog, Cat } from "lucide-react";
+import { Search, ArrowRight, PawPrint } from "lucide-react";
 import { symptoms, SEVERITY } from "@/data/symptoms";
 import SymptomDialog from "@/components/SymptomDialog";
 
-const filters = [
-  { key: "all", label: "Todos", icon: null },
-  { key: "perro", label: "Perros", icon: Dog },
-  { key: "gato", label: "Gatos", icon: Cat },
-];
-
 export default function SymptomsSection() {
   const [q, setQ] = useState("");
-  const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState(null);
 
   const filtered = useMemo(() => {
     return symptoms.filter((s) => {
-      const matchPet = filter === "all" || s.pets.includes(filter);
       const matchQ =
         !q ||
         s.title.toLowerCase().includes(q.toLowerCase()) ||
         s.short.toLowerCase().includes(q.toLowerCase());
-      return matchPet && matchQ;
+      return matchQ;
     });
-  }, [q, filter]);
+  }, [q]);
 
   return (
     <section
@@ -32,7 +24,7 @@ export default function SymptomsSection() {
       className="max-w-7xl mx-auto px-5 sm:px-8 pb-10"
     >
       <div className="bg-white border border-zinc-200 rounded-3xl p-2 sm:p-3 shadow-sm shadow-zinc-100">
-        <div className="flex flex-col md:flex-row gap-3 items-center px-3 pt-3 pb-2">
+        <div className="flex flex-col md:flex-row gap-3 items-center px-3 pt-3 pb-3">
           <div className="flex-1 relative w-full">
             <Search className="w-4 h-4 absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
@@ -44,27 +36,9 @@ export default function SymptomsSection() {
               className="w-full pl-12 pr-5 py-3.5 bg-zinc-50 border border-zinc-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none rounded-full text-base placeholder:text-zinc-400 transition-all"
             />
           </div>
-
-          <div className="flex gap-2 flex-wrap md:flex-nowrap w-full md:w-auto">
-            {filters.map((f) => {
-              const Icon = f.icon;
-              const active = filter === f.key;
-              return (
-                <button
-                  key={f.key}
-                  onClick={() => setFilter(f.key)}
-                  data-testid={`symptom-filter-${f.key}`}
-                  className={`px-5 py-3 text-sm font-semibold rounded-full flex items-center gap-2 transition-colors ${
-                    active
-                      ? "bg-emerald-600 text-white"
-                      : "border border-zinc-300 hover:bg-zinc-50 text-zinc-700"
-                  }`}
-                >
-                  {Icon && <Icon className="w-4 h-4" />}
-                  {f.label}
-                </button>
-              );
-            })}
+          <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-wider uppercase border border-emerald-100 whitespace-nowrap">
+            <PawPrint className="w-3.5 h-3.5" />
+            Aplica a todas las mascotas
           </div>
         </div>
       </div>
@@ -75,7 +49,8 @@ export default function SymptomsSection() {
             Síntomas y emergencias comunes
           </h2>
           <p className="text-zinc-500 text-sm mt-1.5">
-            Haz clic en cualquier tarjeta para ver la guía paso a paso
+            Guía paso a paso aplicable a perros, gatos, aves, roedores, conejos
+            y demás mascotas. Haz clic en una tarjeta para ver el detalle.
           </p>
         </div>
         <div
@@ -112,9 +87,9 @@ export default function SymptomsSection() {
               <h3 className="heading-font font-semibold text-lg tracking-tight mb-1 group-hover:text-emerald-700 transition-colors">
                 {s.title}
               </h3>
-              <div className="flex items-center gap-1 mb-3 text-base">
-                {s.pets.includes("perro") && <span>🐶</span>}
-                {s.pets.includes("gato") && <span>🐱</span>}
+              <div className="inline-flex items-center gap-1 mb-3 text-[10px] uppercase tracking-wider font-bold text-zinc-500">
+                <PawPrint className="w-3 h-3" />
+                Todas las mascotas
               </div>
               <p className="text-sm text-zinc-600 line-clamp-3 mb-4 leading-relaxed">
                 {s.short}

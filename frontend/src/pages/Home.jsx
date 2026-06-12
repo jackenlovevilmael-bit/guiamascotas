@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Hero from "@/components/Hero";
 import Disclaimer from "@/components/Disclaimer";
+import DiagnosticForm from "@/components/DiagnosticForm";
 import SymptomsSection from "@/components/SymptomsSection";
 import EmergencySection from "@/components/EmergencySection";
 import FirstAidKit from "@/components/FirstAidKit";
@@ -17,6 +18,7 @@ export default function Home() {
     <main data-testid="home-page">
       <Hero />
       <Disclaimer />
+      <DiagnosticForm />
       <SymptomsSection />
       <PetsCatalog />
       <EmergencySection />
